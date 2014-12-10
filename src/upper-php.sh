@@ -6,7 +6,7 @@ php $WORKING_DIR/main.php
 
 while (!feof(STDIN)) {
   $line = fgets(STDIN);
-  echo mb_convert_encoding($line, "$ENCODING_TO", "$ENCODING_FROM");
+  echo strtoupper($line);
 }
 
 EOF
