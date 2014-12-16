@@ -62,7 +62,7 @@ for OPERATION in r n a s K KV H HV asKV c C; do
     fi
 done
 
-for OPERATION in lower title upper; do
+for OPERATION in lower title upper casefold capitalize; do
     if [ ! -e ./var/src/$OPERATION-python -o ./src/upper-lower-python.sh -nt ./var/src/$OPERATION-python ]; then
         echo "Build: ./var/src/$OPERATION-python"
         cat ./src/upper-lower-python.sh |
