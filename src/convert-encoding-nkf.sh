@@ -1,0 +1,3 @@
+
+nkf -$ENCODING_FROM$ENCODING_TO
+

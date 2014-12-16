@@ -73,6 +73,7 @@ done
 
 PERL_ENCODING_LIST="sjis cp932 eucjp iso-2022-jp iso-8859-1 utf7 utf8 utf16 utf16be utf16le utf32 utf32be utf32le"
 PHP_ENCODING_LIST="sjis sjis-win sjis-mac cp932 sjis-2004 eucjp eucjp-win eucjp-2004 iso-2022-jp iso-8859-1 utf7 utf8 utf16 utf16be utf16le utf32 utf32be utf32le"
+NKF_ENCODING_LIST="sjis eucjp iso-2022-jp utf8"
 
 cat > ./var/convert-encoding-name-perl.pl <<'EOF'
 
@@ -96,6 +97,40 @@ if ($a eq 'utf16') {
   print 'utf-32le';
 } elsif ($a eq 'utf32be') {
   print 'utf-32be';
+} else {
+  print $a;
+}
+
+EOF
+
+cat > ./var/convert-encoding-name-nkf1.pl <<'EOF'
+
+my $a = $ARGV[0];
+if ($a eq 'utf8') {
+  print 'W';
+} elsif ($a eq 'sjis') {
+  print 'S';
+} elsif ($a eq 'eucjp') {
+  print 'E';
+} elsif ($a eq 'iso-2022-jp') {
+  print 'J';
+} else {
+  print $a;
+}
+
+EOF
+
+cat > ./var/convert-encoding-name-nkf2.pl <<'EOF'
+
+my $a = $ARGV[0];
+if ($a eq 'utf8') {
+  print 'w';
+} elsif ($a eq 'sjis') {
+  print 's';
+} elsif ($a eq 'eucjp') {
+  print 'e';
+} elsif ($a eq 'iso-2022-jp') {
+  print 'j';
 } else {
   print $a;
 }
@@ -129,6 +164,22 @@ for ENCODING_FROM in $PHP_ENCODING_LIST; do
                 sed s/\\\$ENCODING_FROM/$ENCODING_NAME_FROM/g |
                 sed s/\\\$ENCODING_TO/$ENCODING_NAME_TO/g \
                 > ./var/src/$ENCODING_FROM-to-$ENCODING_TO-php
+            fi
+        fi
+    done
+done
+
+for ENCODING_FROM in $NKF_ENCODING_LIST; do
+    ENCODING_NAME_FROM=`perl ./var/convert-encoding-name-nkf1.pl $ENCODING_FROM`
+    for ENCODING_TO in $NKF_ENCODING_LIST; do
+        if [ $ENCODING_FROM != $ENCODING_TO ]; then
+            if [ ! -e ./var/src/$ENCODING_FROM-to-$ENCODING_TO-nkf -o ./src/convert-encoding-nkf.sh -nt ./var/src/$ENCODING_FROM-to-$ENCODING_TO-nkf ]; then
+                echo "Build: ./var/src/$ENCODING_FROM-to-$ENCODING_TO-perl"
+                ENCODING_NAME_TO=`perl ./var/convert-encoding-name-nkf2.pl $ENCODING_TO`
+                cat ./src/convert-encoding-nkf.sh |
+                sed s/\\\$ENCODING_FROM/$ENCODING_NAME_FROM/g |
+                sed s/\\\$ENCODING_TO/$ENCODING_NAME_TO/g \
+                > ./var/src/$ENCODING_FROM-to-$ENCODING_TO-nkf
             fi
         fi
     done
