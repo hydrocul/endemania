@@ -6,7 +6,7 @@ python3 $WORKING_DIR/main.py
 import sys
 
 for line in sys.stdin:
-    line = line.$OPERATION()
+    line = line.%OPERATION()
     sys.stdout.write(line)
 
 EOF

@@ -6,7 +6,7 @@ php $WORKING_DIR/main.php
 
 while (!feof(STDIN)) {
   $line = fgets(STDIN);
-  echo mb_convert_kana($line, "$OPERATION", "UTF-8");
+  echo mb_convert_kana($line, "%OPERATION", "UTF-8");
 }
 
 EOF
