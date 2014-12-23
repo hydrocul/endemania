@@ -20,7 +20,7 @@ ttools/bin/ttr: ttools/make.sh
 
 ttools/make.sh:
 	if [ -e ttools ]; then rm -rv ttools; fi
-	git clone 'https://github.com/hydrocul/ttools.git ttools'
+	git clone 'https://github.com/hydrocul/ttools.git' ttools
 
 clean:
 	-rm -rv bin var ttools
