@@ -8,9 +8,6 @@ var/submakefile: src/build-submakefile.pl
 	mkdir -p var
 	perl src/build-submakefile.pl > var/submakefile
 
-#var/_make: var/ttr
-#	$(CURDIR)/_make.sh
-
 var/ttr: ttools/bin/ttr
 	mkdir -p var
 	cp ttools/bin/ttr var/ttr
@@ -23,7 +20,8 @@ ttools/make.sh:
 	git clone 'https://github.com/hydrocul/ttools.git' ttools
 
 clean:
-	-rm -rv bin var ttools
+	-rm -rv bin var
+	-rm -rvf ttools
 
 mostlyclean:
 	-rm -rv bin var
